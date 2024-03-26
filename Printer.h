@@ -1,16 +1,15 @@
 #ifndef PRINTER_H
 #define PRINTER_H
 
-#define clear_screen() printf("\e[1;1H\e[2J")
-
-#define hide_cursor() printf("\e[?25l")
-#define show_cursor() printf("\e[?25h")
-
 void  initilizeScreen();
 void  writeInitialize(char* message);
 void  writeEnding(char* message);
 char* inputMessage(const char* message);
 void  writeMessage(const char* message);
 void  writeRoom(char** room, int length, int cursor);
+
+void  clear_screen();
+void  hide_cursor();
+void  show_cursor();
 
 #endif /* PRINTER_H */

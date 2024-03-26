@@ -23,7 +23,7 @@ int main() {
     clear_screen();
 
     writeInitialize(initialize());
-    
+
     inputMessage("Pulsa cualquier tecla para empezar:\n\n");
 
     int cursor = 1;
@@ -35,6 +35,7 @@ int main() {
 
         int status = getStatus();
         int length = getLength();
+
         writeRoom(room, length, cursor);
 
         if(status == game_win) {
@@ -42,9 +43,8 @@ int main() {
             writeEnding(message);
             break;
         }
-
         if(status == game_over) {
-            writeMessage("\nHas perdido.\n\n");
+            writeEnding("Has perdido.");
             break;
         }
 
@@ -61,6 +61,7 @@ int main() {
         if(cursor < length - 1 && key == UP) {
             cursor++;
         }
+
         if(key == ENTER) {
             freeStrings(room, length);
             room = makeRoom(cursor);

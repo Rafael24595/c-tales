@@ -59,3 +59,14 @@ void writeRoom(char** room, int length, int cursor) {
     }
     
 }
+
+void clear_screen() {
+    printf("\e[1;1H\e[2J");
+}
+
+void hide_cursor() {
+    printf("\e[?25l");
+}
+void show_cursor() {
+    printf("\e[?25h");
+}
