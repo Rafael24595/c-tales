@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "Utils.h"
 
-#define MAX_ROOM_OPTS_LEN 510
+#define MAX_ROOM_OPTS_LEN 1020
 
 char** allocateStrings(int length) {
     char** strings = (char**) malloc(length * sizeof(char*));
@@ -33,4 +34,20 @@ void freeStrings(char** strings, int length) {
     }
 
     free(strings);
+}
+
+char* concatenate(const char* str1, const char* str2) {
+    size_t len1 = strlen(str1);
+    size_t len2 = strlen(str2);
+    char* result = (char*) malloc(len1 + len2 + 1);
+
+    if (result == NULL) {
+        perror("Memory allocation failed.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    strcpy(result, str1);
+    strcat(result, str2);
+
+    return result;
 }

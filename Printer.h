@@ -7,6 +7,8 @@
 #define show_cursor() printf("\e[?25h")
 
 void  initilizeScreen();
+void  writeInitialize(char* message);
+void  writeEnding(char* message);
 char* inputMessage(const char* message);
 void  writeMessage(const char* message);
 void  writeRoom(char** room, int length, int cursor);

@@ -8,6 +8,7 @@
 
 #include "Utils.h"
 #include "Printer.h"
+#include "Status.h"
 #include "TaleScript.h"
 
 #define ENTRANCE 0
@@ -21,13 +22,9 @@ int main() {
     initilizeScreen();
     clear_screen();
 
-    const char* WELCOME_MESSAGE = initialize();                   
-    writeMessage(WELCOME_MESSAGE);
-
-    const char* START_INPUT_MESSAGE =
-        "Pulsa cualquier tecla para empezar:\n"
-        "\n";
-    inputMessage(START_INPUT_MESSAGE);
+    writeInitialize(initialize());
+    
+    inputMessage("Pulsa cualquier tecla para empezar:\n\n");
 
     int cursor = 1;
     char** room = makeRoom(ENTRANCE);
@@ -36,17 +33,28 @@ int main() {
         hide_cursor();
         clear_screen();
 
+        int status = getStatus();
         int length = getLength();
         writeRoom(room, length, cursor);
 
-        int status = getStatus();
-        if(status == -1) {
-            writeMessage("\nHas perdido\n\n");
+        if(status == game_win) {
+            char* message = ending();
+            writeEnding(message);
             break;
         }
 
-        int key = getch();
+        if(status == game_over) {
+            writeMessage("\nHas perdido.\n\n");
+            break;
+        }
+
+        if(length == 1) {
+            writeMessage("\nContinuar.\n\n");
+            cursor = 0;
+        }
         
+        int key = getch();
+
         if(cursor > 1 && key == DOWN) {
             cursor--;
         }
@@ -56,6 +64,7 @@ int main() {
         if(key == ENTER) {
             freeStrings(room, length);
             room = makeRoom(cursor);
+            cursor = 1;
         }
         if(key == EXIT) {
             show_cursor();

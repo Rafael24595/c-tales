@@ -8,8 +8,24 @@
 
 #define MAX_OUTPUT_LEN 100
 
+#define SEPARATOR "---------------------------------------------------------------------------------------------------\n"
+
 void initilizeScreen() {
     system("chcp 65001");
+}
+
+void writeInitialize(char* message) {
+    printf("\n");
+    printf(message);
+    printf("\n");
+}
+
+void writeEnding(char* message) {
+    printf("\n");
+    printf(SEPARATOR);
+    printf("\n");
+    printf(message);
+    printf("\n\n");
 }
 
 char* inputMessage(const char* message) {
@@ -31,6 +47,7 @@ void writeMessage(const char* message) {
 void writeRoom(char** room, int length, int cursor) {
     printf("%s", room[0]);
     if(length > 1) {
+        printf(SEPARATOR);
         printf("\n¿Qué haces?\n\n");
     }
     for (size_t i = 1; i < length; i++) {
