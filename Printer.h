@@ -3,6 +3,7 @@
 
 void  initilizeScreen();
 void  writeInitialize(char* message);
+void  writeHeader(char* message);
 void  writeEnding(char* message);
 char* inputMessage(const char* message);
 void  writeMessage(const char* message);

@@ -5,7 +5,6 @@
 #define game_continue 0
 #define game_win 1
 
-#define true 1
-#define false 0
+#define quantum_maniac -7
 
 #endif /* STATUS_H */

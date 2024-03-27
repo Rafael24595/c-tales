@@ -2,6 +2,7 @@
 #define TALE_SCRIPT_H
 
 char*  initialize();
+char*  header();
 char*  ending();
 int    getLength();
 int    getStatus();

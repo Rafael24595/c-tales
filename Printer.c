@@ -20,6 +20,13 @@ void writeInitialize(char* message) {
     printf("\n");
 }
 
+void writeHeader(char* message) {
+    printf(message);
+    printf("\n");
+    printf(SEPARATOR);
+    printf("\n\n");
+}
+
 void writeEnding(char* message) {
     printf("\n");
     printf(SEPARATOR);
@@ -50,12 +57,13 @@ void writeRoom(char** room, int length, int cursor) {
         printf(SEPARATOR);
         printf("\n¿Qué haces?\n\n");
     }
+
     for (size_t i = 1; i < length; i++) {
         if(i == cursor) {
             printf(ANSI_BACKGROUND_WHITE "%d.- %s.\n" ANSI_COLOR_RESET, i, room[i]);
             continue;
         }
-        printf("%d.- %s\n", i, room[i]);
+        printf("%d.- %s.\n", i, room[i]);
     }
     
 }

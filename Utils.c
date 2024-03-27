@@ -4,7 +4,7 @@
 
 #include "Utils.h"
 
-#define MAX_ROOM_OPTS_LEN 1020
+#define MAX_ROOM_OPTS_LEN 2040
 
 char** allocateStrings(int length) {
     char** strings = (char**) malloc(length * sizeof(char*));

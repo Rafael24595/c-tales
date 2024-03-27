@@ -36,6 +36,8 @@ int main() {
         int status = getStatus();
         int length = getLength();
 
+        writeHeader(header());
+
         writeRoom(room, length, cursor);
 
         if(status == game_win) {

@@ -3,6 +3,7 @@
 #include <time.h>
 #include <stdlib.h>
 
+#include "Type.h"
 #include "TaleScriptMap.h"
 #include "TaleScript.h"
 #include "Utils.h"
@@ -22,12 +23,14 @@ int status = game_continue;
 int length = 0;
 
 int experience = 0;
-double multiplier = 1.0;
+int multiplier = 1;
 char* range = RANGE_NUKA;
+
 int poison = 0;
+boolean dry = true;
 
 int caps = 0;
-int fatMan = false;
+boolean fatMan = false;
 
 char* initialize(int cursor) {
     srand(time(NULL));
@@ -37,6 +40,36 @@ char* initialize(int cursor) {
         "| Wasteland Tales: La Siniestra Fábrica de Nuka-Cola |\n"
         "|----------------------------------------------------/\n";
     return welcome;
+}
+
+char* header() {
+    char resultExperience[50];
+    sprintf(resultExperience, "Lvl: %d   ", experience);
+    char resultCaps[15];
+    sprintf(resultCaps, "Caps: %d   ", caps);
+    char resultFatman[15];
+    sprintf(resultFatman, "Nuke: %d   ", fatMan);
+    char resultDry[15];
+    sprintf(resultDry, "Dry: %d   ", dry);
+    char resultPoison[15];
+    sprintf(resultPoison, "Poison: %d   ", poison / 2);
+    char resultPassword[15];
+    sprintf(resultPassword, "Note: %d   ", password);
+    
+    char* header = resultExperience;
+    header = concatenate(header, resultCaps);
+    if(fatMan == true) {
+        header = concatenate(header, resultFatman);
+    }
+    if(poison > 0) {
+        header = concatenate(header, resultPoison);
+    }
+    header = concatenate(header, resultDry);
+    if(bagRegistered == true) {
+        header = concatenate(header, resultPassword);
+    }
+
+    return header;
 }
 
 int getLength() {
@@ -60,12 +93,19 @@ char** makeRoom(int cursor) {
         case INSIDE_CANTEEN_ROOM:
             room = makeInsideCanteenRoom(cursor);
             break;
+        case INSIDE_BOTTLER_ROOM:
+            room = makeInsideBottlerRoom(cursor);
+            break;
+        case INSIDE_STORAGE_ROOM:
+            room = makeInsideStorageRoom(cursor);
+            break;
         default:    
             return allocateStrings(0);
     }
 
     if(status == game_over) {
         poison = 0;
+        room = cleanOptions(room);
     }
 
     int auxLength = 1;
@@ -140,7 +180,7 @@ char** _0_makeOutsideRoom() {
 
 char** _1_makeOutsideRoom() {
     status = game_over;
-    experience = experience + 1;
+    incrementExperience(1);
 
     length = 1;
     char** strings = allocateStrings(1);
@@ -165,7 +205,7 @@ char** _1_makeOutsideRoom() {
 char** _2_makeOutsideRoom() {
     location = INSIDE_HALL_ROOM;
 
-    experience = experience + 2;
+    incrementExperience(2);
     char* introduction =
         "Entras en el edificio\n"
         "Un pequeño foco de luz proviniente de un agujero en la pared ilumina la oscura habitación\n"
@@ -177,11 +217,11 @@ char** _2_makeOutsideRoom() {
 }
 
 char** _3_makeOutsideRoom() {
-    experience = experience - 3;
-
     char* introduction = "Hacerlo una vez ya fue estúpido, si volviese a patear la lata en que me convertiría...\n";
 
     if(poison == 0) {
+        decrementExperience(3);
+
         poison = 1;
 
         introduction = 
@@ -208,6 +248,8 @@ char** makeInsideHallRoom(int cursor) {
             return _0_makeInsideHallRoom();
         case 1:
             return _1_makeInsideHallRoom();
+        case 3:
+            return _3_makeInsideHallRoom();
         case 4:
             return _4_makeInsideHallRoom();
         default:    
@@ -245,6 +287,16 @@ char** _1_makeInsideHallRoom() {
     return concatenateAuxIntroduction(introduction, room);
 }
 
+char** _3_makeInsideHallRoom() {
+    location = INSIDE_STORAGE_ROOM;
+
+    char* introduction = 
+        "Sigues el destello del pasillo como aturdido, al igual que las tochomoscas a los generadores eléctricos RobCo\n\n";
+
+    char** room = makeRoom(0);
+    return concatenateAuxIntroduction(introduction, room);
+}
+
 char** _4_makeInsideHallRoom() {
     length = 1;
     char** strings = allocateStrings(length);
@@ -267,7 +319,8 @@ char** _4_makeInsideHallRoom() {
     status = game_win;
     range = RANGE_BIG_BOY;
     caps = caps + 5000;
-    experience = multiplier * 10 + experience;
+    
+    incrementExperience(10);
 
     description = concatenate(description,
         "La fuerza bruta nunca es la solución, así que decides volar la puerta en pedazos con tu reciente adquisición\n"
@@ -298,8 +351,8 @@ char** _4_makeInsideHallRoom() {
 /*                          */
 /****************************/
 
-int ghoulWaked = false;
-int bagRegistered = false;
+boolean ghoulWaked = false;
+boolean bagRegistered = false;
 int password = 0;
 
 char** makeInsideCanteenRoom(int cursor) {
@@ -343,8 +396,8 @@ char** _0_makeInsideCanteenRoom() {
     }
     
     const char* description = 
-            "El necrófago ya no se encuentra en la sala\n"
-            "Pero la bolsa sigue en su sitio.\n";
+            "El necrófago ya no se encuentra en la sala,\n"
+            "pero la bolsa sigue en su sitio.\n";
     strcpy(strings[0], description);
 
     strcpy(strings[1], "Ya tengo todo lo que necesito, mejor me doy la vuelta");
@@ -371,7 +424,7 @@ char** _2_makeInsideCanteenRoom() {
     if(bagRegistered == false) {
         bagRegistered = true;
 
-        experience = experience + 2;
+        incrementExperience(2);
         caps = caps + 500;
 
         introduction = 
@@ -400,8 +453,22 @@ char** _3_makeInsideCanteenRoom() {
             "Pese a ser un alfeñique y estar en descomposición tiene mucha fuerza y agilidad\n"
             "¡Es una necrófago segador!\n";
 
-        if(1 == 0) {
-            //TODO
+        if(secutityAlerted == true && poison == quantum_maniac) {
+            incrementExperience(3);
+            ghoulWaked = true;
+            fatMan = true;
+
+            description = concatenate(description,
+                "\nEl zombie se levanta rápidamente\n"
+                "Pero por alguna razón pasa de largo y no te ataca\n"
+                "Te sobresaltas al ver tu reflejo en lo que queda de un espejo colgado en la pared\n"
+                "¡Pareces un necrófago resplandeciente! El veneno ha debido reaccionar con la Nuka Cola\n"
+                "En la pared donde estaba recostado el necrófago encuentras un lanzagranadas fat-man con una cabeza nuclear\n\n"
+                "Esto se va poner interesante\n\n"
+            );
+
+            char** room = makeRoom(0);
+            return concatenateAuxIntroduction(description, room);
         }
 
         status = game_over;
@@ -424,11 +491,160 @@ char** _3_makeInsideCanteenRoom() {
     return concatenateAuxIntroduction(introduction, room);
 }
 
+
+/****************************/
+/*                          */
+/*     Building Bottler     */
+/*                          */
+/****************************/
+
+boolean secutityAlerted = false;
+
+char** makeInsideBottlerRoom(int cursor) {
+    location = INSIDE_CANTEEN_ROOM;
+
+    switch (cursor) {
+        default:    
+            return allocateStrings(0);
+    }
+}
+
+
+/****************************/
+/*                          */
+/*     Building Storage     */
+/*                          */
+/****************************/
+
+boolean mirelurksAlerted = false;
+
+char** makeInsideStorageRoom(int cursor) {
+    location = INSIDE_STORAGE_ROOM;
+
+    switch (cursor) {
+        case 0:
+            return _0_makeInsideStorageRoom();
+        case 1:
+            return _1_makeInsideStorageRoom();
+        case 2:
+            return _2_makeInsideStorageRoom();
+        case 3:
+            return _3_makeInsideStorageRoom();
+        default:    
+            return allocateStrings(0);
+    }
+}
+
+char** _0_makeInsideStorageRoom() {
+    length = 3;
+    int auxLength = 4;
+    char** strings = allocateStrings(auxLength);
+
+    const char* description = 
+        "Según avanzas por el cavernoso corredor la luz se torna más intensa\n"
+        "El pasillo desemboca en una sala enorme y luminosa inundada en su gran mayoría por un líquido azul\n"
+        "¡El liquido azul es Nuka Cola Quantum! La joya de la corona de John C.Bradberton\n"
+        "El preciado trago esta custodiado por unos repugnantes hombres pinza resplandecientes.\n";
+    strcpy(strings[0], description);
+
+    strcpy(strings[1], "Arriesgarme a darle un trago");
+    strcpy(strings[2], "Correr como alma que lleva al diablo, esos bichos son mortíferos");
+    strcpy(strings[3], "");
+    if(fatMan == true) {
+        length = auxLength;
+        strcpy(strings[3], "Con lo volatil que es la Quantum sería una locura usar aquí el fat-man... ¿No?");
+    }
+
+    return strings;
+}
+
+char** _1_makeInsideStorageRoom() {
+    if(mirelurksAlerted == false) {
+        dry = false;
+        mirelurksAlerted = true;
+
+        location = INSIDE_HALL_ROOM;
+
+        multiplier = 2;
+        incrementExperience(3);
+
+        if(poison >= 5) {
+            poison = quantum_maniac;
+        }
+
+        char* introduction = 
+            "Con las manos formas un cuenco y le das un gran sorbo a la Nuka Cola\n"
+            "Los hombres pinza te han visto, y te ves obligado a huir.\n\n"
+            "Vuelves a la sala principal.\n\n";
+
+        char** room = makeRoom(0);
+        return concatenateAuxIntroduction(introduction, room);
+    }
+
+    status = game_over;
+
+    length = 1;
+    char** strings = allocateStrings(length);
+
+    char* description = "\nLos hombres pinza tienen buena memoria y no se puede razonar con ellos, tus restos acaban formando parte de sus nidos.\n";
+
+    strcpy(strings[0], description);
+    
+    return strings;
+}
+
+char** _2_makeInsideStorageRoom() {
+    location = INSIDE_HALL_ROOM;
+
+    char* introduction = 
+        "Te das la vuelta y caminas sobre tus pasos.\n\n"
+        "Vuelves a la sala principal.\n\n";
+
+    char** room = makeRoom(0);
+    return concatenateAuxIntroduction(introduction, room);
+}
+
+char** _3_makeInsideStorageRoom() {
+    status = game_over;
+
+    incrementExperience(23);
+
+    length = 1;
+    char** strings = allocateStrings(length);
+
+    char* description = 
+        "Decides hacer pastel de cangrejo a la Nuka Cola volando por los aires a los crustáceos inquilinos de la fábrica\n\n";
+
+    description = concatenate(description,
+        reloadFatMan()
+    );
+
+    description = concatenate(description,
+        "Nada más impactar la granada contra los hombres pinza la Nuka Cola Quantum reacciona a la radiación\n"
+        "De una manera tan violenta que la explosión puede sentirse en el Jefferson Memorial\n\n"
+        "Jamás se volvió a saber del mensajero tras el desastre apodado como 'Segundo Megatón'\n"
+    );
+
+    strcpy(strings[0], description);
+    
+    return strings;
+}
+
+
 /****************************/
 /*                          */
 /*           MISC           */
 /*                          */
 /****************************/
+
+char** cleanOptions(char** room) {
+    int auxLength = 1;
+    char** roomAux = allocateStrings(1);
+    strcpy(roomAux[0], room[0]);
+    freeStrings(room, length);
+    length = auxLength;
+    return roomAux;
+}
 
 char** concatenateAuxIntroduction(char* introduction, char** room) {
     if(length > 0) {
@@ -444,6 +660,14 @@ char* reloadFatMan() {
         "Te colocas a una distancia segura y accionas el gatillo.\n\n";
 }
 
+void incrementExperience(int exp) {
+    experience = multiplier * exp + experience;
+}
+
+void decrementExperience(int exp) {
+    experience = experience - exp;
+}
+
 char* poisonCheck() {
     if(poison >= 1) { 
         poison++;
@@ -451,18 +675,17 @@ char* poisonCheck() {
     }
 
     if(poison == 3) {
-        return "Sientes un ligero hormigueo en los dedos";
+        return "Sientes un ligero hormigueo en los dedos.";
     }  
     if(poison == 5) {
-        return "Te sientes mareado";
+        return "Te sientes mareado.";
     }  
     if(poison >= 7) { 
         status = game_over;
-        return "El veneno te deja sin fuerzas y te desvaneces";
+        return "El veneno te deja sin fuerzas y te desvaneces.";
     }
 
-    if(poison == -7) {
-        poison = 0;
+    if(poison == quantum_maniac) {
         return "Parece que la radiación de la Nuka Cola Quantum ha contrarrestado el efecto del veneno";
     }
 
