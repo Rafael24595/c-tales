@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "Utils.h"
+#include "Strings.h"
 
 #define MAX_ROOM_OPTS_LEN 2040
 

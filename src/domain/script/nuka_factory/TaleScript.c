@@ -3,12 +3,11 @@
 #include <time.h>
 #include <stdlib.h>
 
-#include "Type.h"
+#include "../../../commons/Type.h"
+#include "../../../commons/Strings.h"
+#include "../../Status.h"
+#include "../TaleScript.h"
 #include "TaleScriptMap.h"
-#include "TaleScript.h"
-#include "Utils.h"
-#include "Status.h"
-#include "Printer.h"
 
 #define TALE_CODE "NukaFactory"
 

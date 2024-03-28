@@ -6,11 +6,11 @@
 #include <ctype.h>
 #include <locale.h>
 
-#include "Type.h"
-#include "Utils.h"
-#include "Printer.h"
-#include "Status.h"
-#include "TaleScript.h"
+#include "commons/Type.h"
+#include "commons/Strings.h"
+#include "io/Printer.h"
+#include "domain/Status.h"
+#include "domain/script/TaleScript.h"
 
 #define ENTRANCE 0
 
