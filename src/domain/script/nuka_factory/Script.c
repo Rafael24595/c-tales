@@ -7,7 +7,7 @@
 #include "../../../commons/Strings.h"
 #include "../../Status.h"
 #include "../TaleScript.h"
-#include "TaleScriptMap.h"
+#include "Script.h"
 
 #define TALE_CODE "NukaFactory"
 
@@ -474,9 +474,9 @@ char** _stole_bag_makeCanteenRoom() {
 char** _kick_ghoul_makeCanteenRoom() {
     if(ghoulWaked == false) {
         char* description = 
-            "Pateas al monstuo\n"
-            "Pese a ser un alfeñique y estar en descomposición tiene mucha fuerza y agilidad\n"
-            "¡Es una necrófago segador!\n";
+            "Pateas al monstuo.\n\n"
+            "Pese a ser un alfeñique y estar en descomposición tiene mucha fuerza y agilidad.\n"
+            "¡Es un necrófago segador!\n";
 
         if(secutityAlerted == true && poison == quantum_maniac) {
             incrementExperience(3);
@@ -732,10 +732,9 @@ char ** _up_staris_makeBottlerRoom() {
             "Entre la torreta y los robots te hacen picadillo (literalmente)\n\n";
     }
 
-    status = game_win;
-    dry = false;
-
     if(terminalStatus == terminal_unlocked) {
+        status = game_win;
+        dry = false;
         range = RANGE_QUANTUM;
         caps = caps + 2000 - 55;
         
@@ -751,6 +750,8 @@ char ** _up_staris_makeBottlerRoom() {
             "Cambias cincuenta y cinco chapas por una Nuka Cola Quantum y habiendo repuesto fuerzas y con una nueva historia que contar prosigues tu camino a la ciudadela\n\n";
     }
     if(terminalStatus == terminal_destroyed) {
+        status = game_win;
+        dry = false;
         range = RANGE_NUKA;
         caps = caps + 1000;
         

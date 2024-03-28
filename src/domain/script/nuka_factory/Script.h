@@ -1,5 +1,5 @@
-#ifndef TALES_SCRIPT_MAP_H
-#define TALES_SCRIPT_MAP_H
+#ifndef SCRIPT_MAP_H
+#define SCRIPT_MAP_H
 
 char*  initialize(int cursor);
 char*  ending();
@@ -77,4 +77,4 @@ void   decrementExperience(int exp);
 char*  poisonCheck();
 char** concatenateAuxMessages(char** room, int auxLength, char** auxMessages);
 
-#endif /* TALES_SCRIPT_MAP_H */
+#endif /* SCRIPT_MAP_H */
