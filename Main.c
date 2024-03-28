@@ -6,6 +6,7 @@
 #include <ctype.h>
 #include <locale.h>
 
+#include "Type.h"
 #include "Utils.h"
 #include "Printer.h"
 #include "Status.h"
@@ -35,10 +36,18 @@ int main() {
 
         int status = getStatus();
         int length = getLength();
+        boolean input = requireInput();
 
         writeHeader(header());
 
-        writeRoom(room, length, cursor);
+        if(input != true) {
+            writeRoom(room, length, cursor);
+        } else {
+            show_cursor();
+            char* value = inputMessage(room[0]);
+            room = makeInputRoom(cursor, value);
+            continue;
+        }
 
         if(status == game_win) {
             char* message = ending();

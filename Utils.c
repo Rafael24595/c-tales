@@ -51,3 +51,13 @@ char* concatenate(const char* str1, const char* str2) {
 
     return result;
 }
+
+char* cloneString(char* string) {
+    char* stringAux = malloc(strlen(string) + 1);
+    if (stringAux == NULL) {
+        printf("Memory allocation failed.\n");
+        exit(EXIT_FAILURE);
+    }
+    strcpy(stringAux, string);
+    return stringAux;
+}
