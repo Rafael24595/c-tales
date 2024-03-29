@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <conio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -13,8 +14,27 @@
 #define UP 80
 #define EXIT 27
 
+char * controls() {
+    char* resultControls = (char*) malloc(255 * sizeof(char));
+    char* header = 
+        "/-----------------------|\n"
+        "|  Controles del juego  |\n"
+        "|-----------------------/\n\n";
+    sprintf(resultControls, "%sSalir: %s  -  Arriba: %s  -  Abajo: %s  -  Aceptar: %s", header, "Esc", "⇧", "⇩", "Enter");
+    return resultControls;
+}
+
 int main() {
     initilizeScreen();
+    clear_screen();
+
+    char* legend = controls();
+    writeHeader(legend);
+    free(legend);
+
+    char* understand = inputMessage("Pulsa cualquier tecla para continuar:\n\n");
+    free(understand);
+
     clear_screen();
 
     writeInitialize(initialize());
