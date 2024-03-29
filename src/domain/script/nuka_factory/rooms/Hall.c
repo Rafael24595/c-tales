@@ -1,7 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-#include <time.h>
-#include <stdlib.h>
 
 #include "Hall.h"
 
@@ -35,16 +33,22 @@ char** makeHallRoom(int cursor) {
 char** _enter_makeHallRoom() {
     char** room = makeSelectorTemplate(5);
 
-    const char* description = 
-        "Se escuchan unos quejidos sospechosos en la sala que se encuentra a tu izquierda\n"
+    const char* description = "Se escuchan unos quejidos sospechosos en la sala que se encuentra a tu izquierda\n";
+    if(ghoulWaked == true) {
+        description = "En la sala de la izquierda es donde reposaba el mutante\n";
+    }
+
+    description = concatenate(description, 
         "De la sala que tienes enfrente vienen unos ruidos ensordecedores de maquinaria\n"
-        "Y por último el pasillo que tienes a tu derecha parece levemente iluminado por una luz azul celeste.\n";
+        "Y por último el pasillo que tienes a tu derecha parece levemente iluminado por una luz azul celeste.\n"
+    );
+
     strcpy(room[0], description);
 
-    strcpy(room[1], "Puede que alguien esté herido y necesite ayuda, y también desvalido es una buena oportunidad para hacer botín");
-    strcpy(room[2], "¡Máquinas monstruo a mi!");
+    strcpy(room[1], "Puede que alguien esté herido y necesite ayuda... y también desvalido es una buena oportunidad para hacer algo de botín");
+    strcpy(room[2], "¡Máquinas del demonio a mi!");
     strcpy(room[3], "Sientes como ese brillo azul te empieza a atraer poco a poco");
-    strcpy(room[4], "Mejor será que me vaya, soy alergico al polvo...");
+    strcpy(room[4], "Será mejor que me vaya, soy alergico al polvo..");
 
     return room;
 }
@@ -54,7 +58,7 @@ char** _to_canteen_makeHallRoom() {
 
     char* introduction = 
         "Pese a que tu intuición te dice que no, acabas entrando a la sala de la izquierda\n"
-        "Es la cafetería de la fábrica\n"
+        "Es la cafetería de la fábrica.\n"
         "Recostado en una de las paredes se deja ver un bulto.\n\n";
 
     char** room = makeEnterRoom();
@@ -77,7 +81,7 @@ char** _to_storage_makeHallRoom() {
     location = INSIDE_STORAGE_ROOM;
 
     char* introduction = 
-        "Sigues el destello del pasillo como aturdido, al igual que las tochomoscas a los generadores eléctricos RobCo\n\n";
+        "Sigues el onírico destello por pasillo, aturdido, al igual que las tochomoscas a los generadores eléctricos RobCo.\n\n";
 
     char** room = makeEnterRoom();
     return concatenateAuxIntroduction(introduction, room);
@@ -88,13 +92,13 @@ char** _to_outside_makeHallRoom() {
 
     char* description = 
             "Te das cuenta que no ha sido buena idea entrar y decides salir por donde has venido\n"
-            "La puerta está atascada, tiras del pomo como si un yaoguai te estuviese intentando robar el almuerzo\n";
+            "¡La puerta está atascada!, tiras del picaporte como si un yaoguai te estuviese intentando robar el almuerzo.\n";
 
     if(fatMan == false) {
         status = game_over;
 
         description = concatenate(description, 
-            "La puerta se abre, pero el techo vence, dejando caer un buen puñado escombros y un viejo señor mañoso estropeado que te terminan aplastando.\n"
+            "La puerta se abre, pero el techo vence, dejando caer un buen puñado escombros y un viejo señor mañoso estropeado, los cuales te terminan aplastando.\n"
         );
         strcpy(room[0], description);
 
@@ -108,21 +112,21 @@ char** _to_outside_makeHallRoom() {
     incrementExperience(10);
 
     description = concatenate(description,
-        "La fuerza bruta nunca es la solución, así que decides volar la puerta en pedazos con tu reciente adquisición\n"
+        "La fuerza bruta nunca es la solución, así que decides volar en pedazos la puerta con tu reciente adquisición.\n"
     );
     description = concatenate(description,
         reloadFatMan()
     );
     description = concatenate(description,
-        "La granada impacta en la puerta a una velocidad vertiginosa\n"
-        "Pero esta en vez de estallar abre un boquete en la podrida madera dejando escapar al artefacto y provocando que el techo aledaño a la puerta se venga abajo\n"
-        "Escuchas una explosión seguida de gritos, parece que al viejo proyectil no le bastaba con un simple pedazo de madera\n"
-        "Trepas por los escombros de la entrada para contemplar a las víctimas de la insurrecta granada\n"
-        "¡El explosivo ha impactado de lleno en una patrulla del Enclave!\n"
+        "La granada impacta en la desdichada lámina de contrachapado a una velocidad vertiginosa\n"
+        "Pero esta, en vez de estallar, abre un boquete en la podrida madera dejando escapar al artefacto y provocando que el techo aledaño a la puerta se venga abajo.\n\n"
+        "Escuchas una explosión seguida de unos gritos, parece que un simple pedazo de madera no bastaba para saciar la sed de caos del viejo proyectil.\n"
+        "Trepas por los escombros de la entrada para contemplar a las víctimas de la insurrecta granada.\n"
+        "¡El explosivo ha impactado de lleno contra una patrulla del Enclave!\n"
         "Registras los restos del 'accidente' y encuentras un jugoso botín: 5000 chapas y un rifle de plasma nuevecito con su correspondiente munición\n"
-        "¡Resulta que una de las servoarmaduras sigue siendo funcional!¡Y el soldado que la portaba tiene encima un 'six pack' de Nuka Cola Quantum!\n"
-        "\nY así, pertrechado con las mejores armas que la cienda puede proporcionar y con la certeza de que no vas a pasar sed durante una temporada\n"
-        "Partes hacia La Ciudadela cual caballero de antaño con tu armadura resplandeciendo al sol\n"
+        "¡Resulta que una de las servoarmaduras sigue siendo funcional!¡Y el soldado que la portaba tiene encima un 'six pack' de Nuka Cola Quantum!\n\n"
+        "Y así, pertrechado con las mejores armas que la ciencia puede proporcionar y con la certeza de que no vas a pasar sed durante una temporada\n"
+        "Partes hacia La Ciudadela cual caballero de antaño con tu armadura resplandeciendo al marchito sol del yermo.\n"
     );
     strcpy(room[0], description);
 

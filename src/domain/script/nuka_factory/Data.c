@@ -14,6 +14,7 @@ int location = OUTSIDE_ROOM_ENTRANCE;
 
 int status = game_continue;
 int length = 0;
+
 boolean input = false;
 char* buffer = "";
 

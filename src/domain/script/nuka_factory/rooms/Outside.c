@@ -1,7 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-#include <time.h>
-#include <stdlib.h>
 
 #include "Outside.h"
 
@@ -71,6 +69,7 @@ char** _to_hall_makeOutsideRoom() {
     location = INSIDE_HALL_ROOM;
 
     incrementExperience(2);
+
     char* introduction =
         "Entras en el edificio\n"
         "Un pequeño foco de luz proviniente de un agujero en la pared ilumina la oscura habitación\n"
@@ -82,16 +81,16 @@ char** _to_hall_makeOutsideRoom() {
 }
 
 char** _kick_can_makeOutsideRoom() {
-    char* introduction = "Hacerlo una vez ya fue estúpido, si volviese a patear la lata en que me convertiría...\n";
+    char* introduction = "Puede que no haya sido la decisión más brillante que has tomado en tu vida, si lo repitiese en qué me convertiría...\n";
 
     if(poison == 0) {
-        decrementExperience(3);
+        decrementExperience(1);
 
         poison = 1;
 
         introduction = 
-            "Dentro de la lata hay un mutascorpius venenoso que te pica en la pierna al acercarte\n"
-            "El veneno de estos insectos es de acción rápida, debo encontrar algo que neutralizarlo.\n\n";
+            "Dentro de la lata hay una cria de mutascorpius venenoso que te pica en la pierna al acercarte.\n"
+            "¡Maldición! El veneno de estos insectos es de acción rápida, debo encontrar algo que neutralizarlo.\n\n";
     }
 
     char** room = makeEnterRoom();

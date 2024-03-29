@@ -1,7 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-#include <time.h>
-#include <stdlib.h>
 
 #include "Storage.h"
 
@@ -43,7 +41,7 @@ char** _enter_makeStorageRoom() {
     const char* description = 
         "Según avanzas por el cavernoso corredor la luz se torna más intensa\n"
         "El pasillo desemboca en una sala enorme y luminosa inundada en su gran mayoría por un líquido azul.\n\n"
-        "¡El liquido azul es Nuka Cola Quantum! La joya de la corona de John C.Bradberton\n"
+        "¡El dicho líquido es Nuka Cola Quantum! La joya de la corona de John C.Bradberton.\n"
         "El preciado trago esta custodiado por unos repugnantes hombres pinza resplandecientes.\n";
     strcpy(room[0], description);
 
@@ -89,7 +87,32 @@ char** _drink_quantum_makeStorageRoom() {
 
     char** room = makeTemplate();
 
-    char* description = "\nLos hombres pinza tienen buena memoria y no se puede razonar con ellos, tus restos acaban formando parte de sus nidos.\n";
+    char* description = "\nLos hombres pinza tienen buena memoria y no se puede razonar con ellos, tus restos acaban formando parte de sus gelatinosos nidos.\n";
+
+    strcpy(room[0], description);
+    
+    return room;
+}
+
+char** _nuke_mirelurk_makeStorageRoom() {
+    status = game_over;
+
+    incrementExperience(23);
+
+    char** room = makeTemplate();
+
+    char* description = 
+        "Decides hacer pastel de cangrejo a la Nuka Cola volando por los aires a los hipervitaminados crustáceos que han apoderado las catacumbas de la fábrica.\n\n";
+
+    description = concatenate(description,
+        reloadFatMan()
+    );
+
+    description = concatenate(description,
+        "Nada más impactar la granada contra los hombres pinza la Nuka Cola Quantum reacciona a la radiación\n"
+        "De una manera tan violenta que la explosión puede sentirse en el Jefferson Memorial.\n\n"
+        "Jamás se volvió a saber del mensajero tras aquel desastre, apodado a día de hoy como 'El Segundo Megatón'\n"
+    );
 
     strcpy(room[0], description);
     
@@ -105,29 +128,4 @@ char** _to_hall_makeStorageRoom() {
 
     char** room = makeEnterRoom();
     return concatenateAuxIntroduction(introduction, room);
-}
-
-char** _nuke_mirelurk_makeStorageRoom() {
-    status = game_over;
-
-    incrementExperience(23);
-
-    char** room = makeTemplate();
-
-    char* description = 
-        "Decides hacer pastel de cangrejo a la Nuka Cola volando por los aires a los crustáceos inquilinos de la fábrica\n\n";
-
-    description = concatenate(description,
-        reloadFatMan()
-    );
-
-    description = concatenate(description,
-        "Nada más impactar la granada contra los hombres pinza la Nuka Cola Quantum reacciona a la radiación\n"
-        "De una manera tan violenta que la explosión puede sentirse en el Jefferson Memorial\n\n"
-        "Jamás se volvió a saber del mensajero tras el desastre apodado como 'Segundo Megatón'\n"
-    );
-
-    strcpy(room[0], description);
-    
-    return room;
 }

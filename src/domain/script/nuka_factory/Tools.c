@@ -17,6 +17,7 @@ void updateBuffer(char * input) {
 
 char* takeBuffer() {
     char* bufferAux = cloneString(buffer);
+    free(buffer);
     buffer = "";
     return bufferAux;
 }

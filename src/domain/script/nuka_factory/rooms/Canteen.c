@@ -1,7 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-#include <time.h>
-#include <stdlib.h>
 
 #include "Canteen.h"
 
@@ -17,10 +15,6 @@ boolean bagRegistered = false;
 
 char** makeCanteenRoom(int cursor) {
     location = INSIDE_CANTEEN_ROOM;
-
-    if(password == 0) {
-        password = rand() % 9000 + 1000;
-    }
 
     switch (cursor) {
         case 0:
@@ -61,7 +55,7 @@ char** _enter_makeCanteenRoom() {
 
     strcpy(room[1], "Ya tengo todo lo que necesito, mejor me doy la vuelta");
     strcpy(room[2], "¿Qué habrá en la mochila?");
-    strcpy(room[3], "Voy a volver a revisar el agujero de la pared");
+    strcpy(room[3], "Voy a volver a revisar el agujero de la pared que estaba ocultando el necrófago");
 
     return room;
 }
@@ -110,7 +104,7 @@ char** _kick_ghoul_makeCanteenRoom() {
         char* description = 
             "Pateas al monstuo.\n\n"
             "Pese a ser un alfeñique y estar en descomposición tiene mucha fuerza y agilidad.\n"
-            "¡Es un necrófago segador!\n";
+            "¡Es un necrófago segador!\n\n";
 
         if(secutityAlerted == true && poison == quantum_maniac) {
             incrementExperience(3);
@@ -118,7 +112,7 @@ char** _kick_ghoul_makeCanteenRoom() {
             fatMan = true;
 
             description = concatenate(description,
-                "\nEl zombie se levanta rápidamente\n"
+                "El zombie se levanta rápidamente\n"
                 "Pero por alguna razón pasa de largo y no te ataca\n"
                 "Te sobresaltas al ver tu reflejo en lo que queda de un espejo colgado en la pared\n"
                 "¡Pareces un necrófago resplandeciente! El veneno ha debido reaccionar con la Nuka Cola.\n\n"
@@ -135,7 +129,7 @@ char** _kick_ghoul_makeCanteenRoom() {
         char** room = makeTemplate();
 
         description = concatenate(description, 
-            "\nNo te da tiempo a desenfundar el arma antes de que la abominación te salte al cuello.\n"
+            "No te da tiempo a desenfundar el arma antes de que la abominación te salte al cuello.\n"
         );
 
         strcpy(room[0], description);

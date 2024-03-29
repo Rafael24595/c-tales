@@ -74,7 +74,7 @@ boolean requireInput() {
 }
 
 char** makeInputRoom(int cursor, char* input) {
-    buffer = input;
+    updateBuffer(input);
     return makeRoom(cursor);
 }
 
@@ -85,8 +85,11 @@ char** makeEnterRoom() {
 char** makeRoom(int cursor) {
     input = false;
 
+    if(password == 0) {
+        password = rand() % 9000 + 1000;
+    }
+
     char** room;
-    
     switch (location) {
         case OUTSIDE_ROOM_ENTRANCE:
             room = makeOutsideRoom(cursor);

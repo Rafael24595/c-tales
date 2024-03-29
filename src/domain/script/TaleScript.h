@@ -8,6 +8,7 @@ int    getLength();
 int    getStatus();
 boolean requireInput();
 char** makeInputRoom(int cursor, char* input);
+char** makeEnterRoom();
 char** makeRoom(int cursor);
 
 #endif /* TALE_SCRIPT_H */

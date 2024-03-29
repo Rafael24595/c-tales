@@ -1,18 +1,12 @@
-#include <stdio.h>
 #include <conio.h>
 #include <stdlib.h>
-#include <sys/types.h>
-
 #include <ctype.h>
-#include <locale.h>
 
 #include "commons/Type.h"
 #include "commons/Strings.h"
 #include "io/Printer.h"
 #include "domain/Status.h"
 #include "domain/script/TaleScript.h"
-
-#define ENTRANCE 0
 
 #define ENTER 13
 #define DOWN 72
@@ -25,10 +19,11 @@ int main() {
 
     writeInitialize(initialize());
 
-    inputMessage("Pulsa cualquier tecla para empezar:\n\n");
+    char* start = inputMessage("Pulsa cualquier tecla para empezar:\n\n");
+    free(start);
 
     int cursor = 1;
-    char** room = makeRoom(ENTRANCE);
+    char** room = makeEnterRoom();
 
     while (1) {
         hide_cursor();
@@ -86,8 +81,6 @@ int main() {
                 break;
             }
         }
-
-        //printf("%d\n", key);
     }
 
     return 0;

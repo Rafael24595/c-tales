@@ -18,6 +18,7 @@ int location;
 
 int status;
 int length;
+
 boolean input;
 char* buffer;
 
